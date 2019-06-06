@@ -21,7 +21,21 @@
         </activity>
         <activity android:name="reportgarden.view.MainActivity"/>
         <activity android:name="reportgarden.view.SearchResult"/>
+        <service
+            android:name="network.Service"
+            android:exported="false"/>
+        <receiver
+            android:name="common.ResponseBroadcastReceiver"
+            android:process=":remote">
+        <intent-filter>
+            <action android:name="ReportGarden.Receivers.ResponseBroadcastReceiver"/>
+        </intent-filter>
 
+        </receiver>
+
+
+        <receiver android:name="common.ToastBroadcastReceiver"
+            android:process=":remote"/>
     </application>
 
 </manifest>

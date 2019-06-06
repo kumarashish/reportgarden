@@ -13,13 +13,24 @@ public class Dependencies {
     String Dependency;
     @ColumnInfo
     int RepoId;
+    @ColumnInfo
+    int DependencyType;
 
-public Dependencies(String Dependency,int RepoId)
+public Dependencies(String Dependency,int RepoId,int DependencyType)
 {
     this.RepoId=RepoId;
     this.Dependency=Dependency;
+    this. DependencyType= DependencyType;
 
 }
+
+    public int getDependencyType() {
+        return DependencyType;
+    }
+
+    public void setDependencyType(int dependencyType) {
+        DependencyType = dependencyType;
+    }
 
     public int getId() {
         return id;

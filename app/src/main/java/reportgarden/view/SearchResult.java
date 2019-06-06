@@ -1,7 +1,11 @@
 package reportgarden.view;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +24,7 @@ import java.util.List;
 import adapter.ListItemAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import common.ToastBroadcastReceiver;
 import common.Utils;
 import interfaces.OnImportClick;
 import interfaces.OnSubscriberCompleted;
@@ -48,18 +53,16 @@ public class SearchResult  extends FragmentActivity implements OnImportClick, On
         pd= new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.setMessage("loading");
-
         updateUI();
     }
 
-    public void updateUI()
-    {
-        if(model.getTotalCount()>0)
-        {   list.setAdapter(new ListItemAdapter(model.getItems(),SearchResult.this,import_viewModelInstance.getImportedRepositoryList()));
+    public void updateUI() {
+        if (model.getTotalCount() > 0) {
+            list.setAdapter(new ListItemAdapter(model.getItems(), SearchResult.this, import_viewModelInstance.getImportedRepositoryList()));
             list.setTransitionEffect(new SlideInEffect());
             nodataVew.setVisibility(View.GONE);
             list.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             nodataVew.setVisibility(View.VISIBLE);
             list.setVisibility(View.GONE);
         }
@@ -72,8 +75,7 @@ runOnUiThread(new Runnable() {
     @Override
     public void run() {
         pd.show();
-        import_viewModelInstance.getImportData(SearchResult.this,"facebook/react");
-        //import_viewModelInstance.getImportData(SearchResult.this,fullName);
+        import_viewModelInstance.getImportData(SearchResult.this,fullName);
     }
 });
 
@@ -103,8 +105,10 @@ runOnUiThread(new Runnable() {
             @Override
             public void run() {
                pd.cancel();
-                Toast.makeText(SearchResult.this,message,Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchResult.this,"package.json not present ! Details : "+message,Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 }

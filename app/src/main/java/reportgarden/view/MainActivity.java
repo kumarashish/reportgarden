@@ -1,8 +1,11 @@
 package reportgarden.view;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -23,11 +26,15 @@ import com.google.gson.Gson;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import common.ResponseBroadcastReceiver;
+import common.ToastBroadcastReceiver;
 import common.Utils;
 import interfaces.OnSubscriberCompleted;
 import model.SearchModel;
+import network.Service;
 import okhttp3.internal.Util;
 import reportgarden.toppackapp.R;
+import viewModel.Import_ViewModel;
 import viewModel.Search_ViewModel;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener, OnSubscriberCompleted {
@@ -41,15 +48,34 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     RelativeLayout  rel_lyout;
     @BindView(R.id.progress_bar)
     ProgressBar progress;
-    Search_ViewModel viewmodelInstance;;
-
+    Search_ViewModel viewmodelInstance;
+    Import_ViewModel import_viewModel;
+    ResponseBroadcastReceiver broadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         viewmodelInstance = ViewModelProviders.of(this).get(Search_ViewModel.class);
+        import_viewModel=ViewModelProviders.of(this).get(Import_ViewModel.class);
         search_btn.setOnClickListener(this);
+        broadcastReceiver= new ResponseBroadcastReceiver();
+        IntentFilter intentFilter= new IntentFilter();
+        intentFilter.addAction(Service.ACTION);
+
+        if (import_viewModel.getImportedRepositoryList().size() > 0) {
+            startService();
+            registerReceiver(new ResponseBroadcastReceiver(),intentFilter);
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Service.ACTION);
+        registerReceiver(broadcastReceiver,filter);
     }
 
 
@@ -100,5 +126,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         } else {
             Toast.makeText(MainActivity.this, "Please enter text to be searched", Toast.LENGTH_SHORT).show();
         }
+    }
+    public void startService()
+    {
+        Intent toastIntent= new Intent(getApplicationContext(), ToastBroadcastReceiver.class);
+        PendingIntent toastAlarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, toastIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        long startTime=System.currentTimeMillis(); //alarm starts immediately
+        AlarmManager backupAlarmMgr=(AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        backupAlarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,startTime,5*60*1000,toastAlarmIntent); // alarm will repeat after every 5 minutes
     }
 }
