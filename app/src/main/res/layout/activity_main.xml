@@ -20,7 +20,7 @@
             android:padding="10dp"
             android:id="@+id/search_edt"
             android:imeOptions="actionDone"
-            android:hint="Please enter name"
+            android:hint="Please enter Repo name"
             android:background="@drawable/rectangle"
             android:layout_marginRight="10dp"
             android:layout_weight="2"
