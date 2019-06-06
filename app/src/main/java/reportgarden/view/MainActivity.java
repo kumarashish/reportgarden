@@ -18,12 +18,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
+import adapter.PackageAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,6 +35,7 @@ import common.ResponseBroadcastReceiver;
 import common.ToastBroadcastReceiver;
 import common.Utils;
 import interfaces.OnSubscriberCompleted;
+import model.DependencyModel;
 import model.SearchModel;
 import network.Service;
 import okhttp3.internal.Util;
@@ -54,6 +59,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     Search_ViewModel viewmodelInstance;
     Import_ViewModel import_viewModel;
     ResponseBroadcastReceiver broadcastReceiver;
+    ArrayList<DependencyModel>listItems=new ArrayList<>();
+    PackageAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,10 +76,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if (import_viewModel.getImportedRepositoryList().size() > 0) {
             startService();
             registerReceiver(new ResponseBroadcastReceiver(),intentFilter);
-            items_list.setVisibility(View.GONE);
-            noData.setVisibility(View.VISIBLE);
-            noData.setText(import_viewModel.getImportedRepositoryList().size()+"Repository Imported \n\nContaining :"+import_viewModel.getImportedDependencyList().size() +" Dependencies");
-        }else{
+            items_list.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
+            listItems= import_viewModel.getTop10Dependency();
+            adapter=new PackageAdapter(listItems,MainActivity.this);
+            items_list.setAdapter(adapter);
+            }else{
             items_list.setVisibility(View.GONE);
             noData.setVisibility(View.VISIBLE);
             noData.setText("Please Import Some Repository");
@@ -87,15 +96,35 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         registerReceiver(broadcastReceiver,filter);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
 
     public void updateUI()
 
-    {
+    {   rel_lyout.setVisibility(View.VISIBLE);
         SearchModel model=viewmodelInstance.getModel();
         Intent intent = new Intent(MainActivity.this,SearchResult.class);
         intent.putExtra("resultdata", new Gson().toJson(model));
-        startActivity(intent);
+        startActivityForResult(intent,2);
         progress.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        listItems.clear();
+        listItems= import_viewModel.getTop10Dependency();
+            adapter=new PackageAdapter(listItems,MainActivity.this);
+            items_list.setAdapter(adapter);
+            if(listItems.size()>0)
+            {
+                items_list.setVisibility(View.VISIBLE);
+                noData.setVisibility(View.GONE);
+            }
+
     }
 
     @Override
@@ -129,6 +158,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             if (Utils.isNetworkAvailable(MainActivity.this)) {
                 progress.setVisibility(View.VISIBLE);
                 viewmodelInstance.getSearchData(this, search_edt.getText().toString());
+                rel_lyout.setVisibility(View.GONE);
                 hideKeyboardFrom(v);
             }
 

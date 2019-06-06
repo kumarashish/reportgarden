@@ -7,6 +7,8 @@ import androidx.room.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.DependencyModel;
+
 @Dao
 public interface MyDao {
     @Insert()
@@ -21,6 +23,12 @@ public interface MyDao {
     public Data getImportedRepository(String name);
     @Query("Select * from Dependencies where RepoId=:id and DependencyType =:type")
     public List<Dependencies> getDependency(int id,int type);
+
+    @Query("Select distinct Dependency from Dependencies")
+    public List<String> getDependency();
+    @Query("Select COUNT(1) AS `num`  from Dependencies  where Dependency=:dependency")
+    public int getCount(String dependency);
+
     @Query("Select * from Dependencies where Dependency=:dependency and DependencyType =:type")
     public Dependencies getDependency(String dependency,int type);
     @Query("Delete from dependencies where Dependency=:dependency and RepoId=:repoId and DependencyType =:type")

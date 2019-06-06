@@ -11,6 +11,8 @@ import androidx.room.Room;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import common.AppController;
 import common.Constant;
 import common.Utils;
 import interfaces.OnSubscriberCompleted;
+import model.DependencyModel;
 import model.ImportModel;
 import model.SearchModel;
 import room.Data;
@@ -73,6 +76,7 @@ public class Import_ViewModel extends AndroidViewModel {
         Data model = db.Dao().getImportedRepository(userName);
         if (model == null) {
             db.Dao().addRepo(new Data(userName, Utils.getCurrentDateTime()));
+            model = db.Dao().getImportedRepository(userName);
         }
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -139,6 +143,24 @@ public class Import_ViewModel extends AndroidViewModel {
         }
     }
 
+    public ArrayList<DependencyModel> getTop10Dependency() {
+        ArrayList<DependencyModel> topList = new ArrayList<>();
+        List<String> list = db.Dao().getDependency();
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                String name = list.get(i);
+                topList.add(new DependencyModel(name, db.Dao().getCount(name)));
+            }
+
+        }
+        Collections.sort(topList);
+        if(topList.size()>10) {
+            return  (new ArrayList<DependencyModel>(topList.subList(0, 10))) ;
+        }else {
+
+            return topList;
+        }
+    }
     public ImportModel getModel() {
         return model;
     }
@@ -149,6 +171,7 @@ public class Import_ViewModel extends AndroidViewModel {
         for (int i = 0; i < list.size(); i++) {
             repoNameList.add(list.get(i).getFullName());
         }
+
         return repoNameList;
     }
     /************************************getString arraylist of dependency********************/
