@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
@@ -48,6 +49,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     RelativeLayout  rel_lyout;
     @BindView(R.id.progress_bar)
     ProgressBar progress;
+    @BindView(R.id.nodata)
+    TextView noData;
     Search_ViewModel viewmodelInstance;
     Import_ViewModel import_viewModel;
     ResponseBroadcastReceiver broadcastReceiver;
@@ -66,7 +69,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if (import_viewModel.getImportedRepositoryList().size() > 0) {
             startService();
             registerReceiver(new ResponseBroadcastReceiver(),intentFilter);
-
+            items_list.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+            noData.setText(import_viewModel.getImportedRepositoryList().size()+"Repository Imported \n\nContaining :"+import_viewModel.getImportedDependencyList().size() +" Dependencies");
+        }else{
+            items_list.setVisibility(View.GONE);
+            noData.setVisibility(View.VISIBLE);
+            noData.setText("Please Import Some Repository");
         }
     }
 

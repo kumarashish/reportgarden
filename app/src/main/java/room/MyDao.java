@@ -15,6 +15,8 @@ public interface MyDao {
     public void addDependency(Dependencies data);
     @Query("Select * from ImportedRepository ")
     public List<Data> getImportedRepository();
+    @Query("Select * from Dependencies")
+    public List<Dependencies> getImportedDependency();
     @Query("Select * from ImportedRepository where FullName=:name")
     public Data getImportedRepository(String name);
     @Query("Select * from Dependencies where RepoId=:id and DependencyType =:type")

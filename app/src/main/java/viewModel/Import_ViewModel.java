@@ -151,6 +151,12 @@ public class Import_ViewModel extends AndroidViewModel {
         }
         return repoNameList;
     }
+    /************************************getString arraylist of dependency********************/
+    public    List<Dependencies> getImportedDependencyList() {
+        List<Dependencies> list = db.Dao().getImportedDependency();
+
+        return list;
+    }
 
 
 }
