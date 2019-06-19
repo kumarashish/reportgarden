@@ -73,19 +73,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         IntentFilter intentFilter= new IntentFilter();
         intentFilter.addAction(Service.ACTION);
 
-        if (import_viewModel.getImportedRepositoryList().size() > 0) {
-            startService();
-            registerReceiver(new ResponseBroadcastReceiver(),intentFilter);
-            items_list.setVisibility(View.VISIBLE);
-            noData.setVisibility(View.GONE);
-            listItems= import_viewModel.getTop10Dependency();
-            adapter=new PackageAdapter(listItems,MainActivity.this);
-            items_list.setAdapter(adapter);
-            }else{
-            items_list.setVisibility(View.GONE);
-            noData.setVisibility(View.VISIBLE);
-            noData.setText("Please Import Some Repository");
-        }
+//        if (import_viewModel.getImportedRepositoryList().size() > 0) {
+//            startService();
+//            registerReceiver(new ResponseBroadcastReceiver(),intentFilter);
+//            items_list.setVisibility(View.VISIBLE);
+//            noData.setVisibility(View.GONE);
+//            listItems= import_viewModel.getTop10Dependency();
+//            adapter=new PackageAdapter(listItems,MainActivity.this);
+//            items_list.setAdapter(adapter);
+//            }else{
+//            items_list.setVisibility(View.GONE);
+//            noData.setVisibility(View.VISIBLE);
+//            noData.setText("Please Import Some Repository");
+//        }
     }
 
     @Override
@@ -116,9 +116,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         listItems.clear();
-        listItems= import_viewModel.getTop10Dependency();
-            adapter=new PackageAdapter(listItems,MainActivity.this);
-            items_list.setAdapter(adapter);
+//        listItems= import_viewModel.getTop10Dependency();
+//            adapter=new PackageAdapter(listItems,MainActivity.this);
+//            items_list.setAdapter(adapter);
             if(listItems.size()>0)
             {
                 items_list.setVisibility(View.VISIBLE);

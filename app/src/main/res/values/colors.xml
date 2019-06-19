@@ -4,4 +4,11 @@
     <color name="colorPrimaryDark">#2E4053</color>
     <color name="colorAccent">#2E4053</color>
     <color name="white">#ffffff</color>
+    <color name="skyblue">#0073cf</color>
+    <color name="green">#73DA6D</color>
+    <color name="white_new">#FAF9F8</color>
+    <color name="lightText">#dddddb</color>
+    <color name="darkText">#1d1d26</color>
+    <color name="grey">#677178</color>
+    <color name="black">#000000</color>
 </resources>

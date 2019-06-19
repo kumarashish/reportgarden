@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+
+    android:id="@+id/layout"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+
+        android:background="@color/colorPrimary"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+        <TextView
+            android:paddingTop="100dp"
+            android:text="Login"
+            android:textSize="28dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+            <EditText
+
+                android:layout_marginTop="50dp"
+                android:background="@drawable/rectangle"
+                android:paddingLeft="10dp"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/colorPrimary"
+                android:layout_height="50dp"
+                android:id="@+id/input_email"
+
+
+                android:layout_width="match_parent"
+
+                android:singleLine="true"
+                android:hint="Email Id" />
+
+
+
+
+
+
+            <EditText
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle"
+                android:paddingLeft="10dp"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/colorPrimary"
+                android:layout_height="50dp"
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:singleLine="true"
+
+                android:inputType="textPassword"
+                android:hint="Password" />
+
+
+        <TextView
+
+            android:id="@+id/txtvw_register"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="5dp"
+            android:gravity="end"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            android:onClick="onClick"
+            android:text="Not Registered ?Click here for registeration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_marginTop="50dp"
+            android:id="@+id/relativelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button android:id="@+id/btn_login"
+
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:background="@color/skyblue"
+                android:onClick="onClick"
+                android:textColor="@android:color/white"/>
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

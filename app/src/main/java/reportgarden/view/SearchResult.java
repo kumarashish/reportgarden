@@ -57,15 +57,15 @@ public class SearchResult  extends FragmentActivity implements OnImportClick, On
     }
 
     public void updateUI() {
-        if (model.getTotalCount() > 0) {
-            list.setAdapter(new ListItemAdapter(model.getItems(), SearchResult.this, import_viewModelInstance.getImportedRepositoryList()));
-            list.setTransitionEffect(new SlideInEffect());
-            nodataVew.setVisibility(View.GONE);
-            list.setVisibility(View.VISIBLE);
-        } else {
-            nodataVew.setVisibility(View.VISIBLE);
-            list.setVisibility(View.GONE);
-        }
+//        if (model.getTotalCount() > 0) {
+//            list.setAdapter(new ListItemAdapter(model.getItems(), SearchResult.this, import_viewModelInstance.getImportedRepositoryList()));
+//            list.setTransitionEffect(new SlideInEffect());
+//            nodataVew.setVisibility(View.GONE);
+//            list.setVisibility(View.VISIBLE);
+//        } else {
+//            nodataVew.setVisibility(View.VISIBLE);
+//            list.setVisibility(View.GONE);
+//        }
 
     }
 
